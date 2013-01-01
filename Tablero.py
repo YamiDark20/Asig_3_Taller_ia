@@ -50,6 +50,8 @@ class Tablero():
             i += 1
             cont += 1
         self.maxElem = ultimo
+        #print(self.maxElem, (((self.getNumfilas() * 2) - 2) *
+        #((self.getNumColum() * 2) - 1)) + ((self.getNumColum() * 2) - 2))
 
     def turnosExtra(self, mov1, mov2, numlazos):
         nlazo = numlazos

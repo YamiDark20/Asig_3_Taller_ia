@@ -180,6 +180,7 @@ class TableroVisual():
         fin = False
         resultado = ""
         frame = 0
+        movRealizado = []
         while True:
             if self.empieza == "Jugador":
                 for event in pygame.event.get():
@@ -199,7 +200,13 @@ class TableroVisual():
                                     encola.append(c)
                                 else:
                                     encola.remove(c)
-                if(len(encola) == 2):
+                if(len(encola) == 2 and
+                (len(list(filter(lambda i:
+                (i[0].valor == encola[0].valor and i[1].valor == encola[1].valor)
+                or (i[0].valor == encola[1].valor
+                and i[1].valor == encola[0].valor), movRealizado))) <= 0)):
+                    #print(encola, movRealizado)
+                    movRealizado.append(encola)
                     if turnoExtra > 0:
                         turnoExtra -= 1
                     result = self.jugador.realizarMov(encola,
@@ -218,6 +225,10 @@ class TableroVisual():
                     if turnoExtra == 0:
                         self.empieza = "Agente"
                     encola = []
+                elif(len(encola) == 2):
+                    encola[0].presionar()
+                    encola[1].presionar()
+                    encola = []
             elif self.empieza == "Agente":
                 if turnoExtra > 0:
                     turnoExtra -= 1
@@ -231,6 +242,7 @@ class TableroVisual():
                     elif punt.valor == mov[1]:
                         p2 = punt
                 #print(p1.valor, p2.valor)
+                movRealizado.append([p1, p2])
                 pygame.draw.line(self.pantalla, NEGRO, (p1.x, p1.y),
                 (p2.x, p2.y), 10)
                 self.verificarMov(p1, p2, AZUL)
@@ -312,8 +324,9 @@ class TableroVisual():
                                 self.puntos[0].y))
             #Si el mov es horizontal, se evalua con el siguiente
             #fragmento de codigo hacia abajo
-            if((m1 + self.colum * 2) - 1 <=
-            (self.colum * 2 - 2) * self.fila * 2):
+            if(((m1 + self.colum * 2) - 1 <=
+            (self.colum * 2 - 2) * self.fila * 2) and self.colum == self.fila):
+                #print(1)
                 if(self.tablero.tablero[(m1 + self.colum * 2) - 1] == "|"):
                     if(self.tablero.tablero[(m2 + self.colum * 2) - 1] == "|"):
                         if(self.tablero.tablero[m1 +
@@ -321,6 +334,20 @@ class TableroVisual():
                             enviar = min(m1, m1 +
                             ((self.colum * 2) - 1) * 2)
                             punt = self.buscarPunto(enviar)
+                            if punt is not None:
+                                pygame.draw.rect(self.pantalla, color, (
+                                punt.x, punt.y, self.puntos[0].x,
+                                self.puntos[0].y))
+            elif((m1 + (self.colum * 2) - 2) + 1 <= self.tablero.maxElem):
+                #print(2, m1, self.tablero.tablero[(m1 + self.colum * 2) - 1])
+                if(self.tablero.tablero[(m1 + (self.colum * 2) - 2) + 1] == "|"):
+                    if(self.tablero.tablero[(m2 + (self.colum * 2) - 2) + 1] == "|"):
+                        if(self.tablero.tablero[m1 +
+                        ((self.colum * 2) - 1) * 2 + 1] == "-"):
+                            enviar = min(m1, m1 +
+                            ((self.colum * 2) - 1) * 2)
+                            punt = self.buscarPunto(enviar)
+                            #print(m1, punt)
                             if punt is not None:
                                 pygame.draw.rect(self.pantalla, color, (
                                 punt.x, punt.y, self.puntos[0].x,
