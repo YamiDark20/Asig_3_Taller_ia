@@ -7,6 +7,7 @@ class Tablero():
         self.numlazosA = 0
         self.numfilas = fila
         self.numColum = colum
+        self.maxElem = 0
 
     def getNumlazosA(self):
         return self.numlazosA
@@ -32,6 +33,7 @@ class Tablero():
     def crearTablero(self):
         i = cont = 0
         lineaPunto = True
+        ultimo = 0
         while(i <= (((self.getNumfilas() * 2) - 2) *
         ((self.getNumColum() * 2) - 1)) + ((self.getNumColum() * 2) - 2)):
             if i % 2 == 0 and lineaPunto is True:
@@ -44,20 +46,19 @@ class Tablero():
                 else:
                     lineaPunto = True
                 cont = - 1
+                ultimo = i
             i += 1
             cont += 1
+        self.maxElem = ultimo
 
     def turnosExtra(self, mov1, mov2, numlazos):
         nlazo = numlazos
-        #print(mov1.valor, mov2.valor, "SSSSSs")
         m1 = min(mov1.valor, mov2.valor)
         m2 = max(mov1.valor, mov2.valor)
         if m1 + 1 == m2 - 1:
-            #print(mov1.valor, mov2.valor)
             #Si el mov es horizontal, se evalua con el siguiente
             #fragmento de codigo hacia arriba
             if((m1 - self.numColum * 2) + 1 > 0):
-                #print(mov1.valor, mov2.valor)
                 if(self.tablero[(m1 - self.numColum * 2) + 1] == "|"):
                     if(self.tablero[(m2 - self.numColum * 2) + 1] == "|"):
                         if(self.tablero[m1 - ((self.numColum * 2) - 1)

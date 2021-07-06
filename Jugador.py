@@ -21,13 +21,11 @@ class Jugador():
         (x1, y1), (x2, y2), 10)
 
     def realizarMov(self, encola, tablero, pantalla, numCol):
-        #print(encola[0].valor, encola[1].valor)
         if(encola[0].valor > encola[1].valor):
             if(encola[0].valor - 1 == encola[1].valor + 1):
                 if(tablero[encola[0].valor - 1] != "-"):
                     self.conectar(pantalla, encola[0].x, encola[0].y,
                     encola[1].x, encola[1].y)
-                    #self.mover([encola[1].x, encola[1].y], numCol)
                     tablero[encola[0].valor - 1] = "-"
                     return "Agente"
             elif(encola[0].valor - numCol == encola[1].valor + numCol):

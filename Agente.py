@@ -79,8 +79,10 @@ class Agente():
 
             #Si el mov es horizontal, se evalua con el siguiente
             #fragmento de codigo hacia abajo
+            #if((mov[0] + self.mundo.getNumColum() * 2) - 1 <=
+            #(self.mundo.getNumColum() * 2 - 2) * self.mundo.getNumfilas() * 2):
             if((mov[0] + self.mundo.getNumColum() * 2) - 1 <=
-            (self.mundo.getNumColum() * 2 - 2) * self.mundo.getNumfilas() * 2):
+            self.mundo.maxElem):
                 if(self.mundo.tablero[(mov[0] +
                 self.mundo.getNumColum() * 2) - 1] == "|"):
                     if(self.mundo.tablero[(mov[1]
@@ -99,7 +101,7 @@ class Agente():
                             if(puntos == 10):
                                 puntos = 5
                             else:
-                                if puntos == 20:
+                                if puntos == 20 or puntos == 5:
                                     puntos -= 5
                                 else:
                                     puntos += 5
@@ -110,7 +112,7 @@ class Agente():
                             if(puntos == 10):
                                 puntos = 5
                             else:
-                                if puntos == 20:
+                                if puntos == 20 or puntos == 5:
                                     puntos -= 5
                                 else:
                                     puntos += 5
@@ -120,7 +122,7 @@ class Agente():
                             else:
                                 if puntos == 5:
                                     puntos = 20 - puntos
-                                else:
+                                elif puntos != 20:
                                     puntos += 20
                 else:
                     if(self.mundo.tablero[(mov[1]
@@ -130,7 +132,7 @@ class Agente():
                             if(puntos == 10):
                                 puntos = 5
                             else:
-                                if puntos == 20:
+                                if puntos == 20 or puntos == 5:
                                     puntos -= 5
                                 else:
                                     puntos += 5
@@ -140,7 +142,7 @@ class Agente():
                             else:
                                 if puntos == 5:
                                     puntos = 20 - puntos
-                                else:
+                                elif puntos != 20:
                                     puntos += 20
                     else:
                         if(self.mundo.tablero[mov[0] +
@@ -151,7 +153,7 @@ class Agente():
                             else:
                                 if puntos == 5:
                                     puntos = 20 - puntos
-                                else:
+                                elif puntos != 20:
                                     puntos += 20
                         else:
                             if puntos == 0:
@@ -167,7 +169,7 @@ class Agente():
                         if(puntos == 10):
                             puntos = 5
                         else:
-                            if puntos == 20:
+                            if puntos == 20 or puntos == 5:
                                 puntos -= 5
                             else:
                                 puntos += 5
@@ -177,7 +179,7 @@ class Agente():
                         else:
                             if puntos == 5:
                                 puntos = 20 - puntos
-                            else:
+                            elif puntos != 20:
                                 puntos += 20
 
         elif(mov[0] + (self.mundo.getNumColum() * 2 - 1) ==
@@ -237,7 +239,7 @@ class Agente():
                             if puntos == 10:
                                 puntos = 5
                             else:
-                                if puntos == 20:
+                                if puntos == 20 or puntos == 5:
                                     puntos -= 5
                                 else:
                                     puntos += 5
@@ -247,7 +249,7 @@ class Agente():
                             if puntos == 10:
                                 puntos = 5
                             else:
-                                if puntos == 20:
+                                if puntos == 20 or puntos == 5:
                                     puntos -= 5
                                 else:
                                     puntos += 5
@@ -257,7 +259,7 @@ class Agente():
                             else:
                                 if puntos == 5:
                                     puntos = 20 - puntos
-                                else:
+                                elif puntos != 20:
                                     puntos += 20
                 else:
                     if(self.mundo.tablero[mov[1] + 1] == "-"):
@@ -266,7 +268,7 @@ class Agente():
                             if puntos == 10:
                                 puntos = 5
                             else:
-                                if puntos == 20:
+                                if puntos == 20 or puntos == 5:
                                     puntos -= 5
                                 else:
                                     puntos += 5
@@ -276,7 +278,7 @@ class Agente():
                             else:
                                 if puntos == 5:
                                     puntos = 20 - puntos
-                                else:
+                                elif puntos != 20:
                                     puntos += 20
                     else:
                         if(self.mundo.tablero[mov[0] + 2 +
@@ -286,7 +288,7 @@ class Agente():
                             else:
                                 if puntos == 5:
                                     puntos = 20 - puntos
-                                else:
+                                elif puntos != 20:
                                     puntos += 20
                         else:
                             if puntos == 0:
@@ -354,8 +356,22 @@ class Agente():
         agente2 = Agente(self.color)
         agente2.mundo = copy.copy(self.mundo)
         agente2.mundo.tablero = copy.copy(self.mundo.tablero)
-        agente2 = self.alfa_beta(agente2, "Jugador",
-        {"Agente": "Jugador", "Jugador": "Agente"}, maxProf=4)
+        #if self.mundo.tablero.
+        if ((self.mundo.numfilas >= 4 and self.mundo.numfilas <= 6
+        and self.mundo.numColum >= 4 and self.mundo.numColum <= 5)
+        or (self.mundo.numfilas >= 4 and self.mundo.numfilas <= 5
+        and self.mundo.numColum >= 4 and self.mundo.numColum <= 6)):
+            #print(4)
+            agente2 = self.alfa_beta(agente2, "Agente",
+            {"Agente": "Jugador", "Jugador": "Agente"}, maxProf=4)
+        elif (self.mundo.numfilas >= 6 and self.mundo.numfilas <= 7
+        and self.mundo.numColum >= 6 and self.mundo.numColum <= 7):
+            #print(3)
+            agente2 = self.alfa_beta(agente2, "Agente",
+            {"Agente": "Jugador", "Jugador": "Agente"}, maxProf=3)
+        else:
+            agente2 = self.alfa_beta(agente2, "Agente",
+            {"Agente": "Jugador", "Jugador": "Agente"}, maxProf=2)
         movVal = self.movValidos(self.color)
         verificar = True
         while(agente2.mejorEstado is not None):
@@ -370,6 +386,7 @@ class Agente():
                     #Se realiza la funcion puntuacion para aumentar o no
                     #el numlazos del agente
                     self.puntuacion(agente2.mejorEstado, "Agente")
+                    #print(agente2.mejorEstado, agente2.valor)
                     return agente2.mejorEstado, agente2.valor
             agente2 = agente2.siguienteEstado
 
@@ -410,6 +427,7 @@ class Agente():
                 else:
                     if((agente.siguienteEstado is None)
                     or nextAgente.valor < agente.valor):
+                        #agente.valor += nextAgente.valor
                         agente.siguienteEstado = nextAgente
                         agente.mejorEstado = move
 
@@ -417,85 +435,3 @@ class Agente():
                         if(agente.valor <= alpha):
                             return agente
         return agente
-
-    def dibujarTablero(self):
-        acumulador = ""
-        i = 0
-        for key in self.mundo.tablero.keys():
-            if(i < (self.mundo.getNumColum() * 2) - 1):
-                if (self.mundo.tablero[key] == "|"
-                or self.mundo.tablero[key] == "-"):
-                    acumulador += " " + self.mundo.tablero[key]
-                elif(self.mundo.tablero[key] == ""):
-                    acumulador += "  "
-                else:
-                    acumulador += self.mundo.tablero[key]
-                i += 1
-            else:
-                acumulador += "\n"
-                i = 1
-                acumulador += self.mundo.tablero[key]
-        print(acumulador)
-
-#a = Agente("Agente")
-#t = Tablero({}, 6, 5)
-#t.crearTablero()
-#a.mundo = t
-#Lo que esta comentado es para que el jugador comience primero
-#while(True):
-    #a.dibujarTablero()
-    #mov1 = int(input("Movimiento de usuario del primer elemento: "))
-    #mov2 = int(input("Movimiento de usuario del segundo elemento: "))
-    #a.mover(list(sorted([mov1, mov2])))
-    #punt = a.puntuacion(list(sorted([mov1, mov2])), "Jugador")
-    #nlazoJ = 0
-    #if punt >= 30:
-        #nlazoJ = a.mundo.numlazosJ
-        #a.mundo.numlazosJ += 1
-    #while a.mundo.numlazosJ > nlazoJ:
-        #a.dibujarTablero()
-        #mov1 = int(input("Movimiento de usuario del primer elemento: "))
-        #mov2 = int(input("Movimiento de usuario del segundo elemento: "))
-        #a.mover(list(sorted([mov1, mov2])))
-        #punt = a.puntuacion(list(sorted([mov1, mov2])), "Jugador")
-        #nlazoJ = 0
-        #if punt >= 30:
-            #nlazoJ = a.mundo.numlazosJ
-            #a.mundo.numlazosJ += 1
-    #nlazo = a.mundo.numlazosA
-    #a.escogerMov()
-    #print(a.mundo.numlazosA, a.mundo.numlazosJ)
-    #while a.mundo.numlazosA > nlazo:
-        #a.dibujarTablero()
-        #es = input("Espera: ")
-        #nlazo = a.mundo.numlazosA
-        #a.escogerMov()
-
-#Lo siguiente es para que el agente comience primero
-#j = Jugador()
-#while(True):
-    #a.dibujarTablero()
-    #nlazo = a.mundo.numlazosA
-    #a.escogerMov()
-    #print(a.mundo.numlazosA, a.mundo.numlazosJ)
-    #a.dibujarTablero()
-    #while a.mundo.numlazosA > nlazo:
-        #a.dibujarTablero()
-        #es = input("Espera: ")
-        #nlazo = a.mundo.numlazosA
-        #a.escogerMov()
-
-    #mov1 = int(input("Movimiento de usuario del primer elemento: "))
-    #mov2 = int(input("Movimiento de usuario del segundo elemento: "))
-    #j.mover(list(sorted([mov1, mov2])), (a.mundo.getNumColum() * 2) - 1,
-    #a.mundo.tablero)
-    #punt = a.puntuacion(list(sorted([mov1, mov2])), "Jugador")
-    #nlazoJ, a.mundo.numlazosJ = j.haylazo(punt, a.mundo.numlazosJ)
-    #while a.mundo.numlazosJ > nlazoJ:
-        #a.dibujarTablero()
-        #mov1 = int(input("Movimiento de usuario del primer elemento: "))
-        #mov2 = int(input("Movimiento de usuario del segundo elemento: "))
-        #j.mover(list(sorted([mov1, mov2])), (a.mundo.getNumColum() * 2) - 1,
-        #a.mundo.tablero)
-        #punt = a.puntuacion(list(sorted([mov1, mov2])), "Jugador")
-        #nlazoJ, a.mundo.numlazosJ = j.haylazo(punt, a.mundo.numlazosJ)
